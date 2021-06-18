@@ -1,7 +1,6 @@
 const { request, response } = require('express'); 
 const bcryptjs = require('bcryptjs');
 
-// const User = require('../models/user.model');
 const userModel = require('../models/user.model');
 
 const getUsers = async(req = request, res = response) => {    
@@ -24,7 +23,7 @@ const getUsers = async(req = request, res = response) => {
 const postUser = async (req = request, res = response) => {
 
     const { nombre, correo, password, rol } = req.body;
-    const user = new userModel( {nombre, correo, password, rol } );
+    const user = new userModel( { nombre, correo, password, rol } );
 
     // Encriptar contrasenna
     const salt = bcryptjs.genSaltSync();
@@ -40,8 +39,6 @@ const putUser = async(req = request, res = response) => {
     const { id } = req.params;
     const { _id, password, google, ...resto } = req.body;
 
-    // TODO Validar contra BD
-
     if( password ){
         // Encriptar contrasenna
         const salt = bcryptjs.genSaltSync();
@@ -54,9 +51,10 @@ const putUser = async(req = request, res = response) => {
 
 const deleteUser = async(req = request, res = response) => {
     const { id } = req.params;
-
-    const user = await userModel.findByIdAndUpdate(id, {estado : false});
-    res.json( user );
+        const user = await userModel.findByIdAndUpdate(id, {estado : false});
+    res.json({
+        user
+    });
 }
 
 
