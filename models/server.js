@@ -9,8 +9,13 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
 
-        this.authPath = '/auth'
-        this.usersPath = '/api/users';
+        this.paths = {
+            auth: '/auth',
+            buscar: '/buscar',
+            users: '/api/users',
+            categorias: '/api/categories',
+            productos: '/api/productos'
+        }
 
         // Conexion a BD
         this.conectarDB();
@@ -33,6 +38,7 @@ class Server {
 
         // Lectura y parseo del body
         this.app.use( express.json() );
+        this.app.use( express.urlencoded( {extended: false}) );
 
         // STATICFILES
         this.app.use( express.static('public') );
@@ -41,8 +47,11 @@ class Server {
 
     routes(){
 
-        this.app.use(this.authPath, require('../routes/auth.routes'));
-        this.app.use(this.usersPath, require('../routes/users.routes'));
+        this.app.use(this.paths.auth, require('../routes/auth.routes'));
+        this.app.use(this.paths.buscar, require('../routes/buscar.routes'));
+        this.app.use(this.paths.users, require('../routes/users.routes'));
+        this.app.use(this.paths.categorias, require('../routes/categories.routes'));
+        this.app.use(this.paths.productos, require('../routes/productos.routes'));
 
     }
 

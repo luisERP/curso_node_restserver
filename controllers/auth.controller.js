@@ -11,20 +11,20 @@ const login = async(req = request, res = response) => {
         // Verificar si el email existe
         const user = await userModel.findOne({correo});
         if(!user){
-            res.status(400).json({
+            return res.status(400).json({
                 msg: "El correo no esta registrado en la base de datos"
             });
         }
         // Si el usuario esta activo
         if( !user.estado ){
-            res.status(400).json({
+            return res.status(400).json({
                 msg: "El usuario esta inabilitado"
             });
         }
         // Verificar la contraseña 
         const validPasword = bcryptjs.compareSync(password, user.password);
         if(!validPasword){
-            res.status(400).json({
+            return res.status(400).json({
                 msg: "Contraseña incorrecta"
             });
         }
@@ -32,13 +32,12 @@ const login = async(req = request, res = response) => {
         const token = await generarJWT(user.id);
 
         res.json({
-            user,
             token
         })
 
     }catch(err){
         console.log(err);
-        res.status(500).json({
+        return res.status(500).json({
             msg: "Error del servidor"
         })
     }

@@ -16,7 +16,7 @@ const validarJWT = async (req = request, res = response, next) =>{
         // Verificar si el usuario esta en la BD
         if(!userAuthenticated) {
             return res.status(401).json({
-                msg: "Token no valido -usuario borrado le la BD"
+                msg: "Token no valido -usuario no encontrado la BD"
             })
         }
         // Verificar si el usuario esta habilitado ( estado == true)
